@@ -8,45 +8,45 @@ Ele serve como base para projetos que precisam de um backend robusto e escaláve
 ## 🚀 Funcionalidades
 
 -Registro de usuário:
-Criação de usuário com email e senha.
-Senha armazenada de forma segura (hash bcrypt).
+Criação de usuário com email e senha.  
+Senha armazenada de forma segura (hash bcrypt).  
 
 -Login:
-Autenticação de usuário via email e senha.
-Emissão de tokens JWT (access e refresh).
+Autenticação de usuário via email e senha.  
+Emissão de tokens JWT (access e refresh).  
 
 -Logout:
-Revogação do refresh token para encerrar sessão.
-Necessita enviar o access token no header.
+Revogação do refresh token para encerrar sessão.  
+Necessita enviar o access token no header.  
 
 -Esqueceu a senha:
-Envia link de reset de senha para o email do usuário.
-Gera token seguro para resetar senha.
+Envia link de reset de senha para o email do usuário.  
+Gera token seguro para resetar senha.  
 
 -Reset de senha:
-Permite redefinir a senha usando o link enviado por email.
+Permite redefinir a senha usando o link enviado por email.  
 
--Suporte a custom user model baseado em `AbstractUser`
+-Suporte a custom user model baseado em `AbstractUser`.  
 
 ---
 
 ## 📂 Estrutura do Projeto
-project/
-│── manage.py
-│── requirements.txt
-│── .gitignore
-│── README.md
-│
-├── project/ # Configurações principais (settings, urls, wsgi)
-│
-├── users/ # App de autenticação
-│ ├── models.py # CustomUser (baseado em AbstractUser)
-│ ├── views.py # Lógica dos endpoints
-│ ├── serializers.py # Serialização de dados
-│ ├── urls.py # Rotas da API de usuários
-│ └── ...
-│
-└── ...
+project/  
+│── manage.py  
+│── requirements.txt  
+│── .gitignore  
+│── README.md  
+│  
+├── project/ # Configurações principais (settings, urls, wsgi)  
+│  
+├── users/ # App de autenticação  
+│ ├── models.py # CustomUser (baseado em AbstractUser)  
+│ ├── views.py # Lógica dos endpoints  
+│ ├── serializers.py # Serialização de dados  
+│ ├── urls.py # Rotas da API de usuários  
+│ └── ...  
+│  
+└── ...  
 
 
 ---
@@ -59,8 +59,7 @@ project/
 |--------|---------------------------|--------------------------------|--------------|
 | POST   | `/api/register/`          | Registrar novo usuário         | `{ "email": "exemplo@email.com","password": "123456"` |
 | POST   | `/api/login/`             | Login e retorno de token JWT   | `{ "email": "exemplo@gmail.com","password": "123456"` |
-| POST   | `/api/logout/`            | Logout do usuário autenticado  |  Header: Authorization: Bearer <access>
-Body: {"refresh": "<refresh_token>"} |
+| POST   | `/api/logout/`            | Logout do usuário autenticado  | `{ "Header: Authorization: Bearer <access>Body: {"refresh": "<refresh_token>"}"` |
 
 ### 🔒 Reset de Senha
 
