@@ -5,7 +5,7 @@ from rest_framework import status
 from .models import User
 from .serializers import RegisterSerializer, LoginSerializer
 import bcrypt # type: ignore
-from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError # type: ignore
 from django.contrib.auth import authenticate
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
@@ -15,6 +15,7 @@ from django.utils.encoding import force_bytes
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
 
+
 @api_view(['POST'])
 def register(request):
     serializer = RegisterSerializer(data = request.data)
@@ -22,6 +23,8 @@ def register(request):
         serializer.save()
         return Response({"messsage": "Usuário registrado com sucesso! " },status = status.HTTP_201_CREATED)
     return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+
 
 
 @api_view(['POST'])
@@ -43,6 +46,7 @@ def login(request):
         })
     else:
         return Response({'error': 'Usuário ou senha inválidos'}, status=401)
+
 
 
 token_generator = PasswordResetTokenGenerator()
@@ -70,6 +74,8 @@ def forgot_password(request):
     )
 
     return Response({"message": "Email de recuperação enviado"})
+
+
 
 
 @api_view(['POST'])
