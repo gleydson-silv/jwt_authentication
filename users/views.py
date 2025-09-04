@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import User
 from .serializers import RegisterSerializer, LoginSerializer
@@ -30,11 +31,11 @@ def register(request):
 @api_view(['POST'])
 def login(request):
     data = request.data
-    username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
 
     
-    user = authenticate(username=username, password=password)
+    user = authenticate(email = email, password=password)
 
     if user is not None:
         from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
@@ -46,6 +47,20 @@ def login(request):
         })
     else:
         return Response({'error': 'Usuário ou senha inválidos'}, status=401)
+
+
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    try:
+        refresh_token = request.data["refresh"]
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response({"message": "Logout realizado com sucesso."}, status=status.HTTP_205_RESET_CONTENT)
+    except Exception as e:
+        return Response({"error": "Token inválido ou já expirado."}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

@@ -146,3 +146,7 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,               # adiciona o token velho na blacklist
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+]

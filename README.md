@@ -7,12 +7,26 @@ Ele serve como base para projetos que precisam de um backend robusto e escaláve
 
 ## 🚀 Funcionalidades
 
-- Cadastro de usuários
-- Login com autenticação
-- Recuperação de senha via e-mail (reset token)
-- Redefinição de senha com token seguro
-- Endpoints RESTful prontos para integração com qualquer frontend (web, mobile, etc.)
-- Suporte a custom user model baseado em `AbstractUser`
+-Registro de usuário:
+Criação de usuário com email e senha.
+Senha armazenada de forma segura (hash bcrypt).
+
+-Login:
+Autenticação de usuário via email e senha.
+Emissão de tokens JWT (access e refresh).
+
+-Logout:
+Revogação do refresh token para encerrar sessão.
+Necessita enviar o access token no header.
+
+-Esqueceu a senha:
+Envia link de reset de senha para o email do usuário.
+Gera token seguro para resetar senha.
+
+-Reset de senha:
+Permite redefinir a senha usando o link enviado por email.
+
+-Suporte a custom user model baseado em `AbstractUser`
 
 ---
 
@@ -43,9 +57,10 @@ project/
 
 | Método | Endpoint                  | Descrição                     | Body Exemplo |
 |--------|---------------------------|--------------------------------|--------------|
-| POST   | `/api/register/`          | Registrar novo usuário         | `{ "username": "gleydson", "email": "exemplo@email.com", "password": "123456" }` |
-| POST   | `/api/login/`             | Login e retorno de token JWT   | `{ "username": "gleydson", "password": "123456" }` |
-| POST   | `/api/logout/`            | Logout do usuário autenticado  | *Token no Header* |
+| POST   | `/api/register/`          | Registrar novo usuário         | `{ "email": "exemplo@email.com","password": "123456"` |
+| POST   | `/api/login/`             | Login e retorno de token JWT   | `{ "email": "exemplo@gmail.com","password": "123456"` |
+| POST   | `/api/logout/`            | Logout do usuário autenticado  |  Header: Authorization: Bearer <access>
+Body: {"refresh": "<refresh_token>"} |
 
 ### 🔒 Reset de Senha
 
