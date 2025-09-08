@@ -65,7 +65,7 @@ project/
 
 | Método | Endpoint                                           | Descrição                                      | Body Exemplo |
 |--------|----------------------------------------------------|------------------------------------------------|--------------|
-| POST   | `/api/request_reset_password/`                     | Solicitar reset de senha (envia e-mail com link) | `{ "email": "exemplo@email.com" }` |
+| POST   | `/api/forgot_password/`                     | Solicitar reset de senha (envia e-mail com link) | `{ "email": "exemplo@email.com" }` |
 | POST   | `/api/reset_password/<uid>/<token>/`               | Definir nova senha usando o link recebido       | `{ "password": "novasenha123" }` |
 
 ---
