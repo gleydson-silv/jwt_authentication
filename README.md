@@ -111,8 +111,6 @@ python manage.py runserver
 
 Configurar envio real de e-mails (SMTP / SendGrid / Amazon SES)
 
-Implementar autenticação JWT com djangorestframework-simplejwt
-
 Criar documentação automática com drf-yasg ou Swagger
 
 Deploy em Heroku / Render / AWS EC2
