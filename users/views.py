@@ -38,7 +38,7 @@ def login(request):
     user = authenticate(email = email, password=password)
 
     if user is not None:
-        from rest_framework_simplejwt.tokens import RefreshToken # type: ignore
+        from rest_framework_simplejwt.tokens import RefreshToken
         refresh = RefreshToken.for_user(user)
 
         return Response({
@@ -94,7 +94,7 @@ def forgot_password(request):
 
 
 @api_view(['POST'])
-def reset_password(request,uidb64, token):
+def reset_password(request,uidb64, token):# type: ignore
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk = uid)
@@ -114,3 +114,11 @@ def reset_password(request,uidb64, token):
     return Response({'message': "Senha alterada com sucesso"}, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def profile(request):
+    user = request.user
+    return Response({
+        'name': user.first_name + " " + user.last_name,
+        'email': user.email,
+    })

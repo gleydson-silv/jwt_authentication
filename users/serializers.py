@@ -5,18 +5,15 @@ import bcrypt # type: ignore
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'password']  # só email e senha
+        fields = ['email','first_name', 'last_name', 'password']  # só email e senha
 
         extra_kwargs = {
             'password': {'write_only': True}  # senha não aparece no retorno
         }
 
     def create(self, validated_data):
-        user = User(
-            email=validated_data['email']
-        )
-        user.set_password(validated_data['password'])  # usa o hash interno do Django
-        user.save()
+        password = validated_data.pop("password")
+        user = User.objects.create_user(password= password,**validated_data)
         return user
         
 
