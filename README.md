@@ -68,7 +68,6 @@ POST /api/login/
 
 ### 3️⃣ API retorna tokens JWT
 
-```json
 {
   "access": "token",
   "refresh": "token"
@@ -78,11 +77,19 @@ POST /api/login/
 Header necessário:
 
 Authorization: Bearer <access_token>
+
 5️⃣ Usuário pode acessar
+
 GET /api/profile/
+
 6️⃣ Caso esqueça a senha
+
 POST /api/forgot_password/
+
 POST /api/reset_password/<uid>/<token>/
+
+```json
+
 📂 Estrutura do Projeto
 project/
 │── manage.py
@@ -100,29 +107,55 @@ project/
 │   └── ...
 │
 └── ...
+
+---
+
+
 🔗 Endpoints Disponíveis
 🔑 Autenticação
-Método	Endpoint	Descrição	Body Exemplo
-POST	/api/register/	Registrar novo usuário	{ "email": "exemplo@email.com", "first_name": "Nome", "last_name": "Sobrenome", "password": "123456" }
-POST	/api/login/	Login e retorno de token JWT	{ "email": "exemplo@gmail.com", "password": "123456" }
-POST	/api/logout/	Logout do usuário autenticado	{ "refresh": "<refresh_token>" }
+Método	Endpoint	Descrição
+POST	/api/register/	Registrar novo usuário
+POST	/api/login/	Login e retorno de token JWT
+POST	/api/logout/	Logout do usuário autenticado
+📥 Body exemplo — Register
+{
+  "email": "exemplo@email.com",
+  "first_name": "Nome",
+  "last_name": "Sobrenome",
+  "password": "123456"
+}
+📥 Body exemplo — Login
+{
+  "email": "exemplo@gmail.com",
+  "password": "123456"
+}
+📥 Body exemplo — Logout
+{
+  "refresh": "<refresh_token>"
+}
 👤 Perfil do Usuário
 Método	Endpoint	Descrição	Autenticação
 GET	/api/profile/	Retorna dados do usuário autenticado	Bearer Token
-Exemplo de resposta
+📤 Exemplo de resposta
 {
   "email": "exemplo@email.com",
   "first_name": "Nome",
   "last_name": "Sobrenome"
 }
-
-Header necessário:
-
+🔐 Header necessário
 Authorization: Bearer <access_token>
 🔒 Reset de Senha
-Método	Endpoint	Descrição	Body Exemplo
-POST	/api/forgot_password/	Solicitar reset de senha	{ "email": "exemplo@email.com" }
-POST	/api/reset_password/<uid>/<token>/	Definir nova senha	{ "password": "novasenha123" }
+Método	Endpoint	Descrição
+POST	/api/forgot_password/	Solicitar reset de senha
+POST	/api/reset_password/<uid>/<token>/	Definir nova senha
+📥 Body exemplo — Forgot Password
+{
+  "email": "exemplo@email.com"
+}
+📥 Body exemplo — Reset Password
+{
+  "password": "novasenha123"
+}
 ⚙️ Instalação e Execução Local
 🔧 Pré-requisitos
 
@@ -136,10 +169,11 @@ Git
 git clone https://github.com/gleydson-silv/jwt_authentication.git
 cd jwt_authentication
 📦 Criar e ativar ambiente virtual
+Criar ambiente
 python -m venv venv
 Ativar no Windows
 venv\Scripts\activate
-Ativar no Linux/macOS
+Ativar no Linux / macOS
 source venv/bin/activate
 📚 Instalar dependências
 pip install -r requirements.txt
@@ -150,18 +184,36 @@ python manage.py migrate
 python manage.py createsuperuser
 ▶️ Rodar o servidor
 python manage.py runserver
-📌 Próximos Passos (Sugestões de Melhorias)
 
-Configurar envio real de e-mails (SMTP / SendGrid / Amazon SES)
+A API ficará disponível em:
 
-Criar documentação automática com Swagger ou drf-yasg
+http://127.0.0.1:8000/
+📌 Próximos Passos (Melhorias)
 
-Deploy em Heroku, Render ou AWS
+Configurar envio real de e-mails
+
+SMTP
+
+SendGrid
+
+Amazon SES
+
+Criar documentação automática com:
+
+Swagger
+
+drf-yasg
+
+Fazer deploy da API
+
+Heroku
+
+Render
+
+AWS
 
 👨‍💻 Autor
 
-Desenvolvido por Gleydson Luidy Batista da Silva 💻
+Gleydson Luidy Batista da Silva
+
 📧 gleydsonluidy2@gmail.com
-
-
----
