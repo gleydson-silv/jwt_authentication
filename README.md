@@ -21,26 +21,48 @@ Ele serve como base para projetos que precisam de um backend robusto e escaláve
 🚀 Funcionalidades
 
 -Registro de usuário:
+
+
 Criação de usuário com email e senha.
+
+
 Senha armazenada de forma segura (hash bcrypt).
 
 -Login:
+
+
 Autenticação de usuário via email e senha.
+
+
 Emissão de tokens JSON Web Token (access e refresh).
 
 -Logout:
+
+
 Revogação do refresh token para encerrar sessão.
+
+
 Necessita enviar o access token no header.
 
 -Esqueceu a senha:
+
+
 Envia link de reset de senha para o email do usuário.
+
+
 Gera token seguro para resetar senha.
 
 -Reset de senha:
+
+
 Permite redefinir a senha usando o link enviado por email.
 
 -Perfil do usuário autenticado:
+
+
 Endpoint protegido que retorna os dados do usuário logado.
+
+
 Acesso permitido apenas com token JWT válido.
 
 -Suporte a custom user model baseado em AbstractUser.
@@ -67,10 +89,16 @@ Authorization: Bearer <access_token>
 
 
 5️⃣ Usuário pode acessar:
+
+
 GET /api/profile/
 
 6️⃣ Caso esqueça a senha:
+
+
 POST /api/forgot_password/
+
+
 POST /api/reset_password/<uid>/<token>/
 
 📂 Estrutura do Projeto
@@ -90,6 +118,8 @@ project/
 │ └── ...
 │
 └── ...
+
+
 🔗 Endpoints Disponíveis
 🔑 Autenticação
 Método	Endpoint	Descrição	Body Exemplo
@@ -111,6 +141,8 @@ Authorization: Bearer <access_token>
 Método	Endpoint	Descrição	Body Exemplo
 POST	/api/forgot_password/	Solicitar reset de senha (envia e-mail com link)	{ "email": "exemplo@email.com" }
 POST	/api/reset_password/<uid>/<token>/	Definir nova senha usando o link recebido	{ "password": "novasenha123" }
+
+
 ⚙️ Instalação e Execução Local
 🔧 Pré-requisitos
 
