@@ -4,12 +4,14 @@
 ![JWT](https://img.shields.io/badge/Auth-JWT-orange)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-📌 Projeto Django - Sistema de Autenticação e Reset de Senha
+# 📌 Projeto Django - Sistema de Autenticação e Reset de Senha
 
-Este projeto foi desenvolvido em Django + Django REST Framework, com foco em autenticação de usuários e fluxo de recuperação de senha via token.
-Ele serve como base para projetos que precisam de um backend robusto e escalável em Python.
+Este projeto foi desenvolvido em **Django + Django REST Framework**, com foco em **autenticação de usuários** e **fluxo de recuperação de senha via token**.  
+Ele serve como base para projetos que precisam de um **backend robusto e escalável em Python**.
 
-## 🛠️ Tecnologias Utilizadas
+---
+
+# 🛠️ Tecnologias Utilizadas
 
 - Python
 - Django
@@ -18,124 +20,95 @@ Ele serve como base para projetos que precisam de um backend robusto e escaláve
 - PostgreSQL
 - Git
 
-🚀 Funcionalidades
+---
 
--Registro de usuário:
+# 🚀 Funcionalidades
 
-Criação de usuário com email e senha.
+### Registro de usuário
+- Criação de usuário com email e senha
+- Senha armazenada de forma segura (hash)
 
-Senha armazenada de forma segura (hash bcrypt).
+### Login
+- Autenticação de usuário via email e senha
+- Emissão de tokens **JWT (access e refresh)**
 
--Login:
+### Logout
+- Revogação do refresh token para encerrar sessão
+- Necessário enviar o **access token no header**
 
-Autenticação de usuário via email e senha.
+### Esqueceu a senha
+- Envia link de reset de senha para o email do usuário
+- Gera token seguro para redefinição
 
-Emissão de tokens JSON Web Token (access e refresh).
+### Reset de senha
+- Permite redefinir a senha usando o link enviado por email
 
--Logout:
+### Perfil do usuário autenticado
+- Endpoint protegido que retorna os dados do usuário logado
+- Acesso permitido apenas com **token JWT válido**
 
-Revogação do refresh token para encerrar sessão.
+### Custom User Model
+- Modelo de usuário personalizado baseado em `AbstractUser`
 
-Necessita enviar o access token no header.
+---
 
--Esqueceu a senha:
+# 🔄 Fluxo de Autenticação
 
-Envia link de reset de senha para o email do usuário.
+### 1️⃣ Usuário se registra
 
-Gera token seguro para resetar senha.
 
--Reset de senha:
+POST /api/register/
 
-Permite redefinir a senha usando o link enviado por email.
 
--Perfil do usuário autenticado:
+### 2️⃣ Usuário faz login
 
-Endpoint protegido que retorna os dados do usuário logado.
 
-Acesso permitido apenas com token JWT válido.
+POST /api/login/
 
--Suporte a custom user model baseado em AbstractUser.
 
-## 🔄 Fluxo de Autenticação
+### 3️⃣ API retorna tokens JWT
 
-1️⃣ Usuário se registra  
-`POST /api/register/`
-
-2️⃣ Usuário faz login  
-`POST /api/login/`
-
-3️⃣ API retorna tokens JWT  
+```json
 {
-"access": "token",
-"refresh": "token"
+  "access": "token",
+  "refresh": "token"
 }
-
-4️⃣ Usuário acessa rotas protegidas  
+4️⃣ Usuário acessa rotas protegidas
 
 Header necessário:
 
 Authorization: Bearer <access_token>
-
-5️⃣ Usuário pode acessar:
-
+5️⃣ Usuário pode acessar
 GET /api/profile/
-
-6️⃣ Caso esqueça a senha:
-
+6️⃣ Caso esqueça a senha
 POST /api/forgot_password/
-
 POST /api/reset_password/<uid>/<token>/
-
 📂 Estrutura do Projeto
-
 project/
-
 │── manage.py
-
 │── requirements.txt
-
 │── .gitignore
-
 │── README.md
-
 │
-
 ├── project/        # Configurações principais (settings, urls, wsgi)
-
 │
-
 ├── users/          # App de autenticação
-
-│ ├── models.py     # CustomUser (baseado em AbstractUser)
-
-│ ├── views.py      # Lógica dos endpoints
-
-│ ├── serializers.py# Serialização de dados
-
-│ ├── urls.py       # Rotas da API de usuários
-
-│ └── ...
-
+│   ├── models.py       # CustomUser (baseado em AbstractUser)
+│   ├── views.py        # Lógica dos endpoints
+│   ├── serializers.py  # Serialização de dados
+│   ├── urls.py         # Rotas da API de usuários
+│   └── ...
 │
-
 └── ...
-
-
 🔗 Endpoints Disponíveis
 🔑 Autenticação
 Método	Endpoint	Descrição	Body Exemplo
-
 POST	/api/register/	Registrar novo usuário	{ "email": "exemplo@email.com", "first_name": "Nome", "last_name": "Sobrenome", "password": "123456" }
-
 POST	/api/login/	Login e retorno de token JWT	{ "email": "exemplo@gmail.com", "password": "123456" }
-
-POST	/api/logout/	Logout do usuário autenticado	{ "Header: Authorization: Bearer <access> Body: {"refresh": "<refresh_token>"} }
-
+POST	/api/logout/	Logout do usuário autenticado	{ "refresh": "<refresh_token>" }
 👤 Perfil do Usuário
 Método	Endpoint	Descrição	Autenticação
-
 GET	/api/profile/	Retorna dados do usuário autenticado	Bearer Token
-
 Exemplo de resposta
 {
   "email": "exemplo@email.com",
@@ -143,18 +116,13 @@ Exemplo de resposta
   "last_name": "Sobrenome"
 }
 
-Header necessário
+Header necessário:
 
 Authorization: Bearer <access_token>
-
 🔒 Reset de Senha
 Método	Endpoint	Descrição	Body Exemplo
-
-POST	/api/forgot_password/	Solicitar reset de senha (envia e-mail com link)	{ "email": "exemplo@email.com" }
-
-POST	/api/reset_password/<uid>/<token>/	Definir nova senha usando o link recebido	{ "password": "novasenha123" }
-
-
+POST	/api/forgot_password/	Solicitar reset de senha	{ "email": "exemplo@email.com" }
+POST	/api/reset_password/<uid>/<token>/	Definir nova senha	{ "password": "novasenha123" }
 ⚙️ Instalação e Execução Local
 🔧 Pré-requisitos
 
@@ -166,46 +134,34 @@ Git
 
 📥 Clonar o repositório
 git clone https://github.com/gleydson-silv/jwt_authentication.git
-
-cd seu-projeto
-
+cd jwt_authentication
 📦 Criar e ativar ambiente virtual
-
 python -m venv venv
-
-# Ativar no Windows
+Ativar no Windows
 venv\Scripts\activate
-
-# Ativar no Linux/macOS
+Ativar no Linux/macOS
 source venv/bin/activate
-
 📚 Instalar dependências
-
 pip install -r requirements.txt
-
 🗄️ Rodar migrações
-
 python manage.py makemigrations
-
 python manage.py migrate
-
 👤 Criar superusuário (admin)
-
 python manage.py createsuperuser
-
 ▶️ Rodar o servidor
-
 python manage.py runserver
-
 📌 Próximos Passos (Sugestões de Melhorias)
 
 Configurar envio real de e-mails (SMTP / SendGrid / Amazon SES)
 
 Criar documentação automática com Swagger ou drf-yasg
 
-Deploy em Heroku, Render ou Amazon Web Services
+Deploy em Heroku, Render ou AWS
 
 👨‍💻 Autor
 
 Desenvolvido por Gleydson Luidy Batista da Silva 💻
 📧 gleydsonluidy2@gmail.com
+
+
+---
