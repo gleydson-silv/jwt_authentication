@@ -6,197 +6,175 @@
 
 # 📌 Projeto Django - Sistema de Autenticação e Reset de Senha
 
-Este projeto foi desenvolvido em **Django + Django REST Framework**, com foco em **autenticação de usuários** e **fluxo de recuperação de senha via token**.  
-Ele serve como base para projetos que precisam de um **backend robusto e escalável em Python**.
+Este repositório contém uma API construída com **Django** e **Django REST Framework**. O foco principal é fornecer um *backend* seguro para autenticação de usuários, utilizando **JWT** e com suporte a recuperação de senha via e-mail.
+
+O projeto pode servir como base para aplicações que precisem de uma estrutura de login/recuperação robusta e facilmente customizável.
 
 ---
 
-# 🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias utilizadas
 
-- Python
+- Python 3.10+
 - Django
 - Django REST Framework
-- JWT Authentication
-- PostgreSQL
+- JWT (djangorestframework-simplejwt)
+- PostgreSQL (ou SQLite para desenvolvimento)
 - Git
 
 ---
 
-# 🚀 Funcionalidades
+## 🚀 Funcionalidades principais
 
-### Registro de usuário
-- Criação de usuário com email e senha
-- Senha armazenada de forma segura (hash)
-
-### Login
-- Autenticação de usuário via email e senha
-- Emissão de tokens **JWT (access e refresh)**
-
-### Logout
-- Revogação do refresh token para encerrar sessão
-- Necessário enviar o **access token no header**
-
-### Esqueceu a senha
-- Envia link de reset de senha para o email do usuário
-- Gera token seguro para redefinição
-
-### Reset de senha
-- Permite redefinir a senha usando o link enviado por email
-
-### Perfil do usuário autenticado
-- Endpoint protegido que retorna os dados do usuário logado
-- Acesso permitido apenas com **token JWT válido**
-
-### Custom User Model
-- Modelo de usuário personalizado baseado em `AbstractUser`
+- **Registro** de usuário com e-mail e senha
+- **Login** retornando tokens JWT (*access* e *refresh*)
+- **Logout** com invalidação do token de refresh
+- **Recuperação de senha** via link enviado por e-mail
+- **Reset de senha** utilizando token seguro
+- **Perfil do usuário** (rota protegida por JWT)
+- **Custom User Model** estendendo `AbstractUser`
 
 ---
 
-# 🔄 Fluxo de Autenticação
+## 🔄 Fluxo de autenticação
 
-### 1️⃣ Usuário se registra
+1. Usuário se registra
+   ```http
+   POST /api/register/
+   ```
+2. Faz login
+   ```http
+   POST /api/login/
+   ```
+3. Recebe tokens JWT:
+   ```json
+   {
+     "access": "<token>",
+     "refresh": "<token>"
+   }
+   ```
+4. Acessa rotas protegidas enviando o header `Authorization: Bearer <access_token>`
+5. Exemplo de rota protegida:
+   ```http
+   GET /api/profile/
+   ```
+6. Caso esqueça a senha:
+   ```http
+   POST /api/forgot_password/
+   ```
+   e em seguida
+   ```http
+   POST /api/reset_password/<uid>/<token>/
+   ```
 
+---
 
-POST /api/register/
+## 📂 Estrutura do projeto (simplificada)
 
+```
+manage.py
+requirements.txt
+README.md
 
-### 2️⃣ Usuário faz login
+backend/           # configurações Django (settings, urls, wsgi, asgi)
+users/             # app de autenticação
+  ├── models.py        # CustomUser
+  ├── serializers.py   # serializers
+  ├── views.py         # lógica de API
+  ├── urls.py          # rotas do app
+  └── ...
+```
 
+---
 
-POST /api/login/
+## 🔗 Endpoints disponíveis
 
+### 🔑 Autenticação
 
-### 3️⃣ API retorna tokens JWT
+| Método | Endpoint               | Descrição                       |
+|--------|------------------------|---------------------------------|
+| POST   | `/api/register/`       | Registrar novo usuário          |
+| POST   | `/api/login/`          | Login e retorno de tokens JWT   |
+| POST   | `/api/logout/`         | Logout (invalida refresh token) |
 
-{
-  "access": "token",
-  "refresh": "token"
-}
-4️⃣ Usuário acessa rotas protegidas
-
-Header necessário:
-
-Authorization: Bearer <access_token>
-
-5️⃣ Usuário pode acessar
-
-GET /api/profile/
-
-6️⃣ Caso esqueça a senha
-
-POST /api/forgot_password/
-
-POST /api/reset_password/<uid>/<token>/
-
+**Exemplo de body**
 ```json
-
-📂 Estrutura do Projeto
-project/
-│── manage.py
-│── requirements.txt
-│── .gitignore
-│── README.md
-│
-├── project/        # Configurações principais (settings, urls, wsgi)
-│
-├── users/          # App de autenticação
-│   ├── models.py       # CustomUser (baseado em AbstractUser)
-│   ├── views.py        # Lógica dos endpoints
-│   ├── serializers.py  # Serialização de dados
-│   ├── urls.py         # Rotas da API de usuários
-│   └── ...
-│
-└── ...
-
----
-
-
-🔗 Endpoints Disponíveis
-🔑 Autenticação
-Método	Endpoint	Descrição
-POST	/api/register/	Registrar novo usuário
-POST	/api/login/	Login e retorno de token JWT
-POST	/api/logout/	Logout do usuário autenticado
-📥 Body exemplo — Register
 {
   "email": "exemplo@email.com",
   "first_name": "Nome",
   "last_name": "Sobrenome",
   "password": "123456"
 }
-📥 Body exemplo — Login
-{
-  "email": "exemplo@gmail.com",
-  "password": "123456"
-}
-📥 Body exemplo — Logout
-{
-  "refresh": "<refresh_token>"
-}
-👤 Perfil do Usuário
-Método	Endpoint	Descrição	Autenticação
-GET	/api/profile/	Retorna dados do usuário autenticado	Bearer Token
-📤 Exemplo de resposta
+```
+
+### 👤 Perfil do usuário
+
+| Método | Endpoint         | Descrição                          | Autenticação     |
+|--------|------------------|------------------------------------|------------------|
+| GET    | `/api/profile/`  | Dados do usuário autenticado       | Bearer Token     |
+
+**Resposta de exemplo**
+```json
 {
   "email": "exemplo@email.com",
   "first_name": "Nome",
   "last_name": "Sobrenome"
 }
-🔐 Header necessário
-Authorization: Bearer <access_token>
-🔒 Reset de Senha
-Método	Endpoint	Descrição
-POST	/api/forgot_password/	Solicitar reset de senha
-POST	/api/reset_password/<uid>/<token>/	Definir nova senha
-📥 Body exemplo — Forgot Password
-{
-  "email": "exemplo@email.com"
-}
-📥 Body exemplo — Reset Password
-{
-  "password": "novasenha123"
-}
-⚙️ Instalação e Execução Local
-🔧 Pré-requisitos
+```
 
-Python 3.10+
+### 🔒 Reset de senha
 
-Virtualenv (recomendado)
+| Método | Endpoint                               | Descrição               |
+|--------|----------------------------------------|-------------------------|
+| POST   | `/api/forgot_password/`                | Solicitar link por e-mail |
+| POST   | `/api/reset_password/<uid>/<token>/`   | Definir nova senha        |
 
-Git
+**Body exemplos**
+```json
+{ "email": "exemplo@email.com" }
+```
 
-📥 Clonar o repositório
+```json
+{ "password": "novasenha123" }
+```
+
+---
+
+## ⚙️ Instalação e execução local
+
+### Pré-requisitos
+
+- Python 3.10 ou superior
+- Virtualenv (recomendado)
+- Git
+
+### Passos
+
+```bash
 git clone https://github.com/gleydson-silv/jwt_authentication.git
 cd jwt_authentication
-📦 Criar e ativar ambiente virtual
-Criar ambiente
 python -m venv venv
-Ativar no Windows
-venv\Scripts\activate
-Ativar no Linux / macOS
-source venv/bin/activate
-📚 Instalar dependências
+source venv/bin/activate        # Linux/macOS
+# venv\Scripts\activate       # Windows
 pip install -r requirements.txt
-🗄️ Rodar migrações
 python manage.py makemigrations
 python manage.py migrate
-👤 Criar superusuário (admin)
 python manage.py createsuperuser
-▶️ Rodar o servidor
 python manage.py runserver
+```
 
-A API ficará disponível em:
+A API ficará acessível em `http://127.0.0.1:8000/`.
 
-http://127.0.0.1:8000/
-📌 Próximos Passos (Melhorias)
+---
 
-Configurar envio real de e-mails
+## 📌 Próximos passos / melhorias
 
-SMTP
+- Configurar envio real de e-mails (SMTP, SendGrid, Amazon SES)
+- Adicionar testes automatizados para cobertura
+- Suporte a OAuth2/social login
 
-SendGrid
+---
 
-Amazon SES
+© 2026 - Licença MIT
 
 Criar documentação automática com:
 
