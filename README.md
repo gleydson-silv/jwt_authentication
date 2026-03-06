@@ -176,19 +176,6 @@ A API ficará acessível em `http://127.0.0.1:8000/`.
 
 © 2026 - Licença MIT
 
-Criar documentação automática com:
-
-Swagger
-
-drf-yasg
-
-Fazer deploy da API
-
-Heroku
-
-Render
-
-AWS
 
 👨‍💻 Autor
 
