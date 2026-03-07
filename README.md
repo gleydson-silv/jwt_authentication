@@ -108,9 +108,11 @@ users/             # app de autenticação
 
 ### 👤 Perfil do usuário
 
-| Método | Endpoint         | Descrição                          | Autenticação     |
-|--------|------------------|------------------------------------|------------------|
-| GET    | `/api/profile/`  | Dados do usuário autenticado       | Bearer Token     |
+| Método | Endpoint               | Descrição                           | Autenticação     |
+|--------|------------------------|-------------------------------------|------------------|
+| GET    | `/api/profile/`        | Dados do usuário autenticado        | Bearer Token     |
+|--------|------------------------|-------------------------------------|------------------|
+| PUT    | `/api/profile/update/` |Atualiza Dados do usuário autenticado| Bearer Token     |
 
 **Resposta de exemplo**
 ```json
@@ -119,10 +121,6 @@ users/             # app de autenticação
   "first_name": "Nome",
   "last_name": "Sobrenome"
 }
-
-Método   | Endpoint               | Descrição                           | Autenticação     |
-|--------|------------------------|-------------------------------------|------------------|
-| PUT    | `/api/profile/update/` |Atualiza Dados do usuário autenticado| Bearer Token     |
 
 **Resposta de exemplo**
 ```json
