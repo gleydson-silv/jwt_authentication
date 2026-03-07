@@ -119,6 +119,19 @@ users/             # app de autenticação
   "first_name": "Nome",
   "last_name": "Sobrenome"
 }
+
+Método   | Endpoint               | Descrição                           | Autenticação     |
+|--------|------------------------|-------------------------------------|------------------|
+| PUT    | `/api/profile/update/` |Atualiza Dados do usuário autenticado| Bearer Token     |
+
+**Resposta de exemplo**
+```json
+{
+  "email": "exemplo@email.com",
+  "first_name": "Nome",
+  "last_name": "Sobrenome"
+}
+
 ```
 
 ### 🔒 Reset de senha

@@ -122,3 +122,20 @@ def profile(request):
         'name': user.first_name + " " + user.last_name,
         'email': user.email,
     })
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_profile(request):
+    user = request.user
+    data = request.data
+
+    user.first_name = data.get('first_name', user.first_name)
+    user.last_name  = data.get('last_name', user.last_name)
+    user.email = data.get('email', user.email)
+    user.save()
+
+    return Response({
+        'name': user.first_name + " " + user.last_name,
+        'email': user.email,
+    })   
