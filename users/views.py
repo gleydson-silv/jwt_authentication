@@ -176,3 +176,10 @@ def verify_token(token):
     except TokenError:
         return False
     
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_account(request):
+    user = request.user
+    user.delete()
+    return Response({'message': "Conta deletada com sucesso"}, status=status.HTTP_200_OK)
