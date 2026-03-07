@@ -150,16 +150,7 @@ users/             # app de autenticação
 | Método | Endpoint               | Descrição                           | Autenticação     |
 |--------|------------------------|-------------------------------------|------------------|
 | DELETE | `/api/delete_account/` | Deleta a conta do usuário atual     | Bearer Token     |
-**Body exemplos**
-```json
-{ "email": "exemplo@email.com" }
-```
 
-```json
-{ "password": "novasenha123" }
-```
-
----
 
 ## ⚙️ Instalação e execução local
 
