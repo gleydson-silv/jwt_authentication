@@ -134,11 +134,22 @@ users/             # app de autenticação
 
 ### 🔒 Reset de senha
 
-| Método | Endpoint                               | Descrição               |
-|--------|----------------------------------------|-------------------------|
+| Método | Endpoint                               | Descrição                 |
+|--------|----------------------------------------|---------------------------|
 | POST   | `/api/forgot_password/`                | Solicitar link por e-mail |
 | POST   | `/api/reset_password/<uid>/<token>/`   | Definir nova senha        |
 
+### 🔐 Troca de senha 
+
+| Método | Endpoint               | Descrição                                         | Autenticação     |
+|--------|------------------------|---------------------------------------------------|------------------|
+| POST   | `/api/change_password/`| Altera a senha do usuário autenticado             | Bearer Token     |
+
+### 🗑️ Conta do usuário
+
+| Método | Endpoint               | Descrição                           | Autenticação     |
+|--------|------------------------|-------------------------------------|------------------|
+| DELETE | `/api/delete_account/` | Deleta a conta do usuário atual     | Bearer Token     |
 **Body exemplos**
 ```json
 { "email": "exemplo@email.com" }
