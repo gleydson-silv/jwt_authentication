@@ -111,7 +111,7 @@ def reset_password(request,uidb64, token):
     user.save()
     
     return Response({'message': "Senha alterada com sucesso"}, status=status.HTTP_200_OK)
-
+    
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -165,3 +165,14 @@ def update_profile(request):
         'name': user.first_name + " " + user.last_name,
         'email': user.email,
     })   
+
+
+
+@api_view(['POST'])
+def verify_token(token):
+    try:
+        RefreshToken(token)
+        return True
+    except TokenError:
+        return False
+    
