@@ -46,7 +46,7 @@ def login(request):
             'access': str(refresh.access_token),
         })
     else:
-        return Response({'error': 'Usuário ou senha inválidos'}, status=401)
+        return Response({'error': 'Usuário ou senha inválidos'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 
@@ -72,14 +72,13 @@ def forgot_password(request):
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
-        return Response({"error": "Usuário não encontrado"}, status=404)
+        return Response({"error": "Usuário não encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
     token = token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
 
     reset_link = f"http://localhost:3000/reset-password/{uid}/{token}/"
 
-    # Exemplo: envia por email
     send_mail(
         "Redefinir senha",
         f"Clique no link para redefinir sua senha: {reset_link}",
@@ -94,7 +93,7 @@ def forgot_password(request):
 
 
 @api_view(['POST'])
-def reset_password(request,uidb64, token):# type: ignore
+def reset_password(request,uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk = uid)
