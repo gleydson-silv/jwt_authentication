@@ -15,6 +15,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.password_validation import validate_password
 
 
 @api_view(['POST'])
@@ -109,6 +110,33 @@ def reset_password(request,uidb64, token):
     user.set_password(new_password)
     user.save()
     
+    return Response({'message': "Senha alterada com sucesso"}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    user = request.user
+    current_password = request.data.get('current_password')
+    new_password = request.data.get('new_password')
+    
+    if not current_password or not new_password:
+        return Response({'error': "As senhas atual e nova são obrigatórias"}, status = status.HTTP_400_BAD_REQUEST)
+    
+    if not user.check_password(current_password):
+        return Response({'error': "Senha atual incorreta"}, status = status.HTTP_400_BAD_REQUEST)
+    
+    if new_password == current_password:
+        return Response({'error': "A nova senha deve ser diferente da senha atual"}, status = status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        validate_password(new_password, user)
+    except Exception as e:
+        return Response({'error': str(e)}, status = status.HTTP_400_BAD_REQUEST)
+    
+    user.set_password(new_password)
+    user.save()
+
     return Response({'message': "Senha alterada com sucesso"}, status=status.HTTP_200_OK)
 
 
