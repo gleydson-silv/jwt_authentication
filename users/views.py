@@ -33,7 +33,6 @@ def login(request):
     data = request.data
     email = data.get('email')
     password = data.get('password')
-
     
     user = authenticate(email = email, password=password)
 
