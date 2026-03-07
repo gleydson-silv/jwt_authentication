@@ -111,7 +111,6 @@ users/             # app de autenticação
 | Método | Endpoint               | Descrição                           | Autenticação     |
 |--------|------------------------|-------------------------------------|------------------|
 | GET    | `/api/profile/`        | Dados do usuário autenticado        | Bearer Token     |
-|--------|------------------------|-------------------------------------|------------------|
 | PUT    | `/api/profile/update/` |Atualiza Dados do usuário autenticado| Bearer Token     |
 
 **Resposta de exemplo**
@@ -121,6 +120,7 @@ users/             # app de autenticação
   "first_name": "Nome",
   "last_name": "Sobrenome"
 }
+```
 
 **Resposta de exemplo**
 ```json
