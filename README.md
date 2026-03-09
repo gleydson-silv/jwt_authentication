@@ -93,7 +93,7 @@ users/             # app de autenticação
 | Método | Endpoint               | Descrição                       |
 |--------|------------------------|---------------------------------|
 | POST   | `/api/register/`       | Registrar novo usuário          |
-| POST   | `/api/login/`          | Login e retorno de tokens JWT   |
+| POST   | `/api/login/`          | Login de usuário                |
 | POST   | `/api/logout/`         | Logout (invalida refresh token) |
 
 **Exemplo de body**
@@ -150,6 +150,24 @@ users/             # app de autenticação
 | Método | Endpoint               | Descrição                           | Autenticação     |
 |--------|------------------------|-------------------------------------|------------------|
 | DELETE | `/api/delete_account/` | Deleta a conta do usuário atual     | Bearer Token     |
+
+### 🔍 Verificação de Token
+
+| Método | Endpoint             | Descrição                                           |
+|--------|----------------------|-----------------------------------------------------|
+| POST   | `/api/token/verify/` | Verifica se um token JWT de refresh/access é válido |
+
+### 🔐 Autenticação em Dois Fatores (2FA)
+
+| Método | Endpoint                 | Descrição                                          | Autenticação     |
+|--------|--------------------------|----------------------------------------------------|------------------|
+| POST   | `/api/2fa/verify/`       | Valida o código TOTP e emite tokens JWT            | -                |
+| POST   | `/api/2fa/enable/`       | Gera segredo e ativa 2FA para o usuário            | Bearer Token     |
+| POST   | `/api/2fa/disable/`      | Desativa 2FA no usuário                            | Bearer Token     |
+
+
+
+
 
 
 ## ⚙️ Instalação e execução local

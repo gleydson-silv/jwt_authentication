@@ -276,7 +276,7 @@ def verify_2fa(request):
 
     user = User.objects.filter(email=email).first()
     if not user:
-        return Response({"error": "Usuário não encontrado"}, status=404)
+        return Response({"error": "Usuário não encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
     totp = pyotp.TOTP(user.two_factor_secret)
 
