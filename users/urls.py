@@ -15,4 +15,5 @@ urlpatterns = [
     path('token/verify/', views.verify_token, name='token_verify'),
     path('account/delete/', views.delete_account, name='delete_account'),
     path('2fa/verify/', views.verify_2fa, name='verify_2fa'),
+    path('2fa/enable/', views.enable_2fa, name='enable_2fa'),
 ]
