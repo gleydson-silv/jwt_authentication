@@ -16,9 +16,11 @@ from django.utils.encoding import force_bytes
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.password_validation import validate_password
+from django_ratelimit.decorators import ratelimit
 
 
 @api_view(['POST'])
+@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
 def register(request):
     serializer = RegisterSerializer(data = request.data)
     if serializer.is_valid():
@@ -30,6 +32,7 @@ def register(request):
 
 
 @api_view(['POST'])
+@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
 def login(request):
     data = request.data
     email = data.get('email')
@@ -53,6 +56,7 @@ def login(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
 def logout(request):
     try:
         refresh_token = request.data["refresh"]
@@ -67,6 +71,7 @@ def logout(request):
 token_generator = PasswordResetTokenGenerator()
 
 @api_view(["POST"])
+@ratelimit(key='user', rate = '5/m', method='POST', error_message="erro: limite máximo de requisições.")
 def forgot_password(request):
     email = request.data.get("email")
     try:
@@ -93,6 +98,7 @@ def forgot_password(request):
 
 
 @api_view(['POST'])
+@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
 def reset_password(request,uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -114,6 +120,7 @@ def reset_password(request,uidb64, token):
     
 
 @api_view(['POST'])
+@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
 @permission_classes([IsAuthenticated])
 def change_password(request):
     user = request.user
@@ -142,6 +149,7 @@ def change_password(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@ratelimit(key='user', rate='60/m', method='GET', error_message="erro: limite máximo de requisições.")
 def profile(request):
     user = request.user
     return Response({
@@ -152,6 +160,7 @@ def profile(request):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
+@ratelimit(key='user', rate='5/m', method='PUT', error_message="erro: limite máximo de requisições.")
 def update_profile(request):
     user = request.user
     data = request.data
@@ -169,15 +178,19 @@ def update_profile(request):
 
 
 @api_view(['POST'])
-def verify_token(token):
+@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
+def verify_token(request):
+    token = request.data.get("token")
+
     try:
         RefreshToken(token)
-        return True
+        return Response({"valid": True})
     except TokenError:
-        return False
+        return Response({"valid": False})
     
 
 @api_view(['DELETE'])
+@ratelimit(key='user', rate='5/m', method='DELETE', error_message="erro: limite máximo de requisições.")
 @permission_classes([IsAuthenticated])
 def delete_account(request):
     user = request.user
