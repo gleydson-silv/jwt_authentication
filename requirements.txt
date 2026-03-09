@@ -4,4 +4,5 @@ djangorestframework-simplejwt
 psycopg2-binary
 bcrypt
 django-ratelimit
+pyotp
 

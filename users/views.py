@@ -17,11 +17,18 @@ from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.password_validation import validate_password
 from django_ratelimit.decorators import ratelimit
-
+from rest_framework_simplejwt.tokens import RefreshToken
+import pyotp # type: ignore
 
 @api_view(['POST'])
-@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='POST')
 def register(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     serializer = RegisterSerializer(data = request.data)
     if serializer.is_valid():
         serializer.save()
@@ -32,32 +39,47 @@ def register(request):
 
 
 @api_view(['POST'])
-@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='POST')
 def login(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     data = request.data
     email = data.get('email')
     password = data.get('password')
     
     user = authenticate(email = email, password=password)
-
-    if user is not None:
-        from rest_framework_simplejwt.tokens import RefreshToken
-        refresh = RefreshToken.for_user(user)
-
+    
+    if not user:
+        return Response({"error": "Credenciais inválidas"}, status = status.HTTP_401_UNAUTHORIZED)
+    
+    if user.two_factor_enabled:
         return Response({
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
+            "2fa_required": True,
+            "message": "Informe o codigo de verificação"}, status = status.HTTP_200_OK)
+    
+    refresh = RefreshToken.for_user(user)
+    
+    return Response({
+        "access": str(refresh.access_token),
+        "refresh": str(refresh)
         })
-    else:
-        return Response({'error': 'Usuário ou senha inválidos'}, status=status.HTTP_401_UNAUTHORIZED)
-
 
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='POST')
 def logout(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     try:
         refresh_token = request.data["refresh"]
         token = RefreshToken(refresh_token)
@@ -71,8 +93,14 @@ def logout(request):
 token_generator = PasswordResetTokenGenerator()
 
 @api_view(["POST"])
-@ratelimit(key='user', rate = '5/m', method='POST', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate = '5/m', method='POST')
 def forgot_password(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     email = request.data.get("email")
     try:
         user = User.objects.get(email=email)
@@ -98,8 +126,14 @@ def forgot_password(request):
 
 
 @api_view(['POST'])
-@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='POST')
 def reset_password(request,uidb64, token):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk = uid)
@@ -120,9 +154,15 @@ def reset_password(request,uidb64, token):
     
 
 @api_view(['POST'])
-@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='POST')
 @permission_classes([IsAuthenticated])
 def change_password(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     user = request.user
     current_password = request.data.get('current_password')
     new_password = request.data.get('new_password')
@@ -149,8 +189,14 @@ def change_password(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@ratelimit(key='user', rate='60/m', method='GET', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='60/m', method='GET')
 def profile(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     user = request.user
     return Response({
         'name': user.first_name + " " + user.last_name,
@@ -160,8 +206,14 @@ def profile(request):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-@ratelimit(key='user', rate='5/m', method='PUT', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='PUT')
 def update_profile(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     user = request.user
     data = request.data
 
@@ -178,8 +230,14 @@ def update_profile(request):
 
 
 @api_view(['POST'])
-@ratelimit(key='user', rate='5/m', method='POST', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='POST')
 def verify_token(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     token = request.data.get("token")
 
     try:
@@ -190,9 +248,15 @@ def verify_token(request):
     
 
 @api_view(['DELETE'])
-@ratelimit(key='user', rate='5/m', method='DELETE', error_message="erro: limite máximo de requisições.")
+@ratelimit(key='user', rate='5/m', method='DELETE')
 @permission_classes([IsAuthenticated])
 def delete_account(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
     user = request.user
     user.delete()
     return Response({'message': "Conta deletada com sucesso"}, status=status.HTTP_200_OK)
