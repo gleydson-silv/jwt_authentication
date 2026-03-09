@@ -260,3 +260,32 @@ def delete_account(request):
     user = request.user
     user.delete()
     return Response({'message': "Conta deletada com sucesso"}, status=status.HTTP_200_OK)
+
+
+api_view(['POST'])
+@ratelimit(key='user', rate='5/m', method='POST')
+def verify_2fa(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
+    email = request.data.get("email")
+    code = request.data.get("code")
+
+    user = User.objects.filter(email=email).first()
+    if not user:
+        return Response({"error": "Usuário não encontrado"}, status=404)
+
+    totp = pyotp.TOTP(user.two_factor_secret)
+
+    if not totp.verify(code):
+        return Response({"error": "Código inválido"}, status=status.HTTP_400_BAD_REQUEST)
+
+    refresh = RefreshToken.for_user(user)
+
+    return Response({
+        "access": str(refresh.access_token),
+        "refresh": str(refresh)
+    })

@@ -14,4 +14,5 @@ urlpatterns = [
     path('profile/update/', views.update_profile, name='update_profile'),
     path('token/verify/', views.verify_token, name='token_verify'),
     path('account/delete/', views.delete_account, name='delete_account'),
+    path('2fa/verify/', views.verify_2fa, name='verify_2fa'),
 ]
