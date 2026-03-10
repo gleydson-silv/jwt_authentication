@@ -18,6 +18,7 @@ O projeto pode servir como base para aplicações que precisem de uma estrutura 
 - Django
 - Django REST Framework
 - JWT (djangorestframework-simplejwt)
+- django-allauth (login social)
 - PostgreSQL (ou SQLite para desenvolvimento)
 - Git
 
@@ -32,6 +33,7 @@ O projeto pode servir como base para aplicações que precisem de uma estrutura 
 - **Reset de senha** utilizando token seguro
 - **Perfil do usuário** (rota protegida por JWT)
 - **Custom User Model** estendendo `AbstractUser`
+- **Login social com Google** via django-allauth
 
 ---
 
@@ -39,11 +41,11 @@ O projeto pode servir como base para aplicações que precisem de uma estrutura 
 
 1. Usuário se registra
    ```http
-   POST /api/register/
+   POST /register/
    ```
 2. Faz login
    ```http
-   POST /api/login/
+   POST /login/
    ```
 3. Recebe tokens JWT:
    ```json
@@ -55,15 +57,15 @@ O projeto pode servir como base para aplicações que precisem de uma estrutura 
 4. Acessa rotas protegidas enviando o header `Authorization: Bearer <access_token>`
 5. Exemplo de rota protegida:
    ```http
-   GET /api/profile/
+   GET /profile/
    ```
 6. Caso esqueça a senha:
    ```http
-   POST /api/forgot_password/
+   POST /forgot_password/
    ```
    e em seguida
    ```http
-   POST /api/reset_password/<uid>/<token>/
+   POST /reset_password/<uid>/<token>/
    ```
 
 ---
@@ -92,9 +94,9 @@ users/             # app de autenticação
 
 | Método | Endpoint               | Descrição                       |
 |--------|------------------------|---------------------------------|
-| POST   | `/api/register/`       | Registrar novo usuário          |
-| POST   | `/api/login/`          | Login de usuário                |
-| POST   | `/api/logout/`         | Logout (invalida refresh token) |
+| POST   | `/register/`       | Registrar novo usuário          |
+| POST   | `/login/`          | Login de usuário                |
+| POST   | `/logout/`         | Logout (invalida refresh token) |
 
 **Exemplo de body**
 ```json
@@ -110,8 +112,8 @@ users/             # app de autenticação
 
 | Método | Endpoint               | Descrição                             | Autenticação     |
 |--------|------------------------|---------------------------------------|------------------|
-| GET    | `/api/profile/`        | Dados do usuário autenticado          | Bearer Token     |
-| PUT    | `/api/profile/update/` | Atualiza Dados do usuário autenticado | Bearer Token     |
+| GET    | `/profile/`        | Dados do usuário autenticado          | Bearer Token     |
+| PUT    | `/profile/update/` | Atualiza Dados do usuário autenticado | Bearer Token     |
 
 **Resposta de exemplo**
 ```json
@@ -136,34 +138,42 @@ users/             # app de autenticação
 
 | Método | Endpoint                               | Descrição                 |
 |--------|----------------------------------------|---------------------------|
-| POST   | `/api/forgot_password/`                | Solicitar link por e-mail |
-| POST   | `/api/reset_password/<uid>/<token>/`   | Definir nova senha        |
+| POST   | `/forgot_password/`                | Solicitar link por e-mail |
+| POST   | `/reset_password/<uid>/<token>/`   | Definir nova senha        |
 
 ### 🔐 Troca de senha 
 
 | Método | Endpoint               | Descrição                                         | Autenticação     |
 |--------|------------------------|---------------------------------------------------|------------------|
-| POST   | `/api/change_password/`| Altera a senha do usuário autenticado             | Bearer Token     |
+| POST   | `/change_password/`| Altera a senha do usuário autenticado             | Bearer Token     |
 
 ### 🗑️ Conta do usuário
 
 | Método | Endpoint               | Descrição                           | Autenticação     |
 |--------|------------------------|-------------------------------------|------------------|
-| DELETE | `/api/delete_account/` | Deleta a conta do usuário atual     | Bearer Token     |
+| DELETE | `/account/delete/` | Deleta a conta do usuário atual     | Bearer Token     |
 
 ### 🔍 Verificação de Token
 
 | Método | Endpoint             | Descrição                                           |
 |--------|----------------------|-----------------------------------------------------|
-| POST   | `/api/token/verify/` | Verifica se um token JWT de refresh/access é válido |
+| POST   | `/token/verify/` | Verifica se um token JWT de refresh/access é válido |
 
 ### 🔐 Autenticação em Dois Fatores (2FA)
 
 | Método | Endpoint                 | Descrição                                          | Autenticação     |
 |--------|--------------------------|----------------------------------------------------|------------------|
-| POST   | `/api/2fa/verify/`       | Valida o código TOTP e emite tokens JWT            | -                |
-| POST   | `/api/2fa/enable/`       | Gera segredo e ativa 2FA para o usuário            | Bearer Token     |
-| POST   | `/api/2fa/disable/`      | Desativa 2FA no usuário                            | Bearer Token     |
+| POST   | `/2fa/verify/`       | Valida o código TOTP e emite tokens JWT            | -                |
+| POST   | `/2fa/enable/`       | Gera segredo e ativa 2FA para o usuário            | Bearer Token     |
+| POST   | `/2fa/disable/`      | Desativa 2FA no usuário                            | Bearer Token     |
+
+### 🌐 Login social (Google)
+
+| Método | Endpoint                      | Descrição                          |
+|--------|-------------------------------|------------------------------------|
+| GET    | `/accounts/google/login/`     | Inicia o login com Google          |
+
+Após autenticar, o allauth faz redirect conforme `LOGIN_REDIRECT_URL` em `backend/settings.py`.
 
 
 

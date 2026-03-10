@@ -7,5 +7,6 @@ from django.conf import settings # type: ignore
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('users.urls')),
+    path('', include('users.urls')),
+    path('accounts/', include('allauth.urls')),  # URLs do django-allauth
 ]

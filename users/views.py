@@ -18,7 +18,10 @@ from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.password_validation import validate_password
 from django_ratelimit.decorators import ratelimit
 from rest_framework_simplejwt.tokens import RefreshToken
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.helpers import complete_social_login
 import pyotp # type: ignore
+from django.contrib.auth import get_user_model
 
 @api_view(['POST'])
 @ratelimit(key='user', rate='5/m', method='POST')
@@ -262,7 +265,7 @@ def delete_account(request):
     return Response({'message': "Conta deletada com sucesso"}, status=status.HTTP_200_OK)
 
 
-api_view(['POST'])
+@api_view(['POST'])
 @ratelimit(key='user', rate='5/m', method='POST')
 def verify_2fa(request):
     if getattr(request, 'limited', False):
@@ -293,6 +296,7 @@ def verify_2fa(request):
 
 @api_view(['POST'])
 @ratelimit(key='user', rate='5/m', method='POST')
+@permission_classes([IsAuthenticated])
 def enable_2fa(request):
     if getattr(request, 'limited', False):
         return Response(
@@ -303,7 +307,7 @@ def enable_2fa(request):
     user = request.user
 
     if user.two_factor_enabled:
-        return Response({"error: 2FA já está habilitado"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "2FA já está habilitado"}, status=status.HTTP_400_BAD_REQUEST)
     
     secret = pyotp.random_base32()
     user.two_factor_secret = secret
@@ -315,6 +319,7 @@ def enable_2fa(request):
 
 @api_view(['POST'])
 @ratelimit(key='user', rate='5/m', method='POST')
+@permission_classes([IsAuthenticated])
 def disable_2fa(request):
     if getattr(request, 'limited', False):
         return Response(
@@ -325,9 +330,9 @@ def disable_2fa(request):
     user = request.user
 
     if not user.two_factor_enabled:
-        return Response({"error: 2FA já está desabilitado"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "2FA já está desabilitado"}, status=status.HTTP_400_BAD_REQUEST)
     
-    user.two.factor_secret = ""
+    user.two_factor_secret = ""
     user.two_factor_enabled = False
     user.save()
     return Response({"message": "2FA desabilitado com sucesso"}, status=status.HTTP_200_OK)

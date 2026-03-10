@@ -5,4 +5,6 @@ psycopg2-binary
 bcrypt
 django-ratelimit
 pyotp
-
+django-allauth
+requests
+criptography
