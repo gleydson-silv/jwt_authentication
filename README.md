@@ -207,6 +207,27 @@ A API ficará acessível em `http://127.0.0.1:8000/`.
 
 ---
 
+## 🐳 Execução com Docker
+
+1. Copie o arquivo `.env.example` para `.env` e ajuste se necessário
+2. Suba os containers
+
+```bash
+docker compose up --build
+```
+
+3. Em outro terminal, rode as migrations e crie o superuser
+
+```bash
+docker compose exec web python manage.py makemigrations
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py createsuperuser
+```
+
+A API ficará acessível em `http://127.0.0.1:8000/`.
+
+---
+
 ## 📌 Próximos passos / melhorias
 
 - Configurar envio real de e-mails (SMTP, SendGrid, Amazon SES)
