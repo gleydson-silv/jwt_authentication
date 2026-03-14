@@ -1,0 +1,24 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Perfil{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Perfil do usuário</h1>
+    <p>Consulte rapidamente os dados vinculados ao token em uso.</p>
+  </div>
+  <div class="card" data-profile>
+    <div class="kv">
+      <span>Nome</span>
+      <strong data-profile-name>---</strong>
+    </div>
+    <div class="kv">
+      <span>E-mail</span>
+      <strong data-profile-email>---</strong>
+    </div>
+  </div>
+  <button class="button primary" data-action="load-profile">Carregar perfil</button>
+  <div class="result" data-result></div>
+</section>
+{% endblock %}
