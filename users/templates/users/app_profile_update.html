@@ -1,0 +1,28 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Atualizar Perfil{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Atualizar perfil</h1>
+    <p>Edite os dados pessoais vinculados à conta.</p>
+  </div>
+  <form class="form" data-endpoint="/profile/update/" data-method="PUT" data-auth="true" data-redirect="/app/profile/">
+    <label class="field">
+      <span>Nome</span>
+      <input type="text" name="first_name" placeholder="Nome" />
+    </label>
+    <label class="field">
+      <span>Sobrenome</span>
+      <input type="text" name="last_name" placeholder="Sobrenome" />
+    </label>
+    <label class="field">
+      <span>E-mail</span>
+      <input type="email" name="email" placeholder="voce@email.com" />
+    </label>
+    <button class="button primary" type="submit">Salvar alterações</button>
+  </form>
+  <div class="result" data-result></div>
+</section>
+{% endblock %}
