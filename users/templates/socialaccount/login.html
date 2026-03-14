@@ -1,0 +1,21 @@
+{% extends "users/base.html" %}
+
+{% block title %}Auth Studio · Google{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Entrar com Google</h1>
+    <p>Você está prestes a autenticar usando sua conta Google.</p>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <button class="button google" type="submit">Continuar com Google</button>
+  </form>
+
+  <div class="helper">
+    Prefere outro método? <a href="/app/login/">Voltar ao login</a>.
+  </div>
+</section>
+{% endblock %}
