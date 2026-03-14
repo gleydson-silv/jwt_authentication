@@ -1,0 +1,23 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Verificar Token{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Verificar token</h1>
+    <p>Valide qualquer JWT informado manualmente.</p>
+  </div>
+  <form class="form" data-endpoint="/token/verify/" data-method="POST" data-redirect="/app/security/">
+    <label class="field">
+      <span>Token</span>
+      <textarea name="token" rows="4" placeholder="Cole o access ou refresh token" required></textarea>
+    </label>
+    <button class="button primary" type="submit">Verificar token</button>
+  </form>
+  <div class="result" data-result></div>
+  <div class="helper">
+    Quer usar o token atual? <button class="link" data-action="use-access">Usar access salvo</button>
+  </div>
+</section>
+{% endblock %}
