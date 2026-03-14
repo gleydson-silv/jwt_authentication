@@ -1,0 +1,32 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Registro{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Criar conta</h1>
+    <p>Cadastre um usuário e valide o fluxo de registro.</p>
+  </div>
+  <form class="form" data-endpoint="/register/" data-method="POST" data-redirect="/app/login/">
+    <label class="field">
+      <span>Nome</span>
+      <input type="text" name="first_name" placeholder="Nome" required />
+    </label>
+    <label class="field">
+      <span>Sobrenome</span>
+      <input type="text" name="last_name" placeholder="Sobrenome" required />
+    </label>
+    <label class="field">
+      <span>E-mail</span>
+      <input type="email" name="email" placeholder="voce@email.com" required />
+    </label>
+    <label class="field">
+      <span>Senha</span>
+      <input type="password" name="password" placeholder="Crie uma senha" required />
+    </label>
+    <button class="button primary" type="submit">Registrar</button>
+  </form>
+  <div class="result" data-result></div>
+</section>
+{% endblock %}
