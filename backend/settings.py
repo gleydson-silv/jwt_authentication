@@ -178,5 +178,5 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = "/profile/"
+LOGIN_REDIRECT_URL = "/app/profile/"
 LOGOUT_REDIRECT_URL = "/login/"
