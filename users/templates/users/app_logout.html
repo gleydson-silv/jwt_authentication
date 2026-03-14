@@ -1,0 +1,17 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Logout{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Logout</h1>
+    <p>Invalidar o refresh token e encerrar a sessão.</p>
+  </div>
+  <form class="form" data-endpoint="/logout/" data-method="POST" data-auth="true" data-use-refresh="true" data-redirect="/app/">
+    <p class="inline-note">O refresh token será enviado automaticamente se estiver salvo.</p>
+    <button class="button primary" type="submit">Fazer logout</button>
+  </form>
+  <div class="result" data-result></div>
+</section>
+{% endblock %}
