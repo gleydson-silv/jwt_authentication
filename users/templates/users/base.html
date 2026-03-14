@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Auth Studio{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'users/app.css' %}" />
+    <script src="{% static 'users/app.js' %}" defer></script>
+  </head>
+  <body>
+    <div class="background">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="/app/">
+        <span class="brand-mark">JWT</span>
+        <div>
+          <div class="brand-title">Auth Studio</div>
+          <div class="brand-subtitle">Painel de rotas e fluxos</div>
+        </div>
+      </a>
+      <nav class="nav">
+        <a href="/app/" class="nav-link">Visão Geral</a>
+        <a href="/app/login/" class="nav-link">Login</a>
+        <a href="/app/register/" class="nav-link">Registro</a>
+        <a href="/app/profile/" class="nav-link">Perfil</a>
+        <a href="/app/security/" class="nav-link">Segurança</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <span>JWT Auth UI · Django + DRF</span>
+      <span>Tokens e sessões ficam no navegador.</span>
+    </footer>
+  </body>
+</html>
