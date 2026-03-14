@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Desativar 2FA{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Desativar 2FA</h1>
+    <p>Remova o segundo fator com o usuário autenticado.</p>
+  </div>
+  <form class="form" data-endpoint="/2fa/disable/" data-method="POST" data-auth="true" data-redirect="/app/security/">
+    <button class="button danger" type="submit">Desativar 2FA</button>
+  </form>
+  <div class="result" data-result></div>
+</section>
+{% endblock %}
