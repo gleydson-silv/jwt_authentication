@@ -1,0 +1,17 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Refresh Token{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Renovar access token</h1>
+    <p>Envie o refresh token para emitir um novo access token.</p>
+  </div>
+  <form class="form" data-endpoint="/token/refresh/" data-method="POST" data-use-refresh="true" data-redirect="/app/profile/">
+    <p class="inline-note">O refresh token salvo no navegador será enviado automaticamente.</p>
+    <button class="button primary" type="submit">Renovar token</button>
+  </form>
+  <div class="result" data-result></div>
+</section>
+{% endblock %}
