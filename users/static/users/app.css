@@ -401,7 +401,7 @@ body {
 }
 
 .site-footer {
-  position:relative;
+  position: relative;
   z-index: 1;
   padding: 20px 8vw 36px;
   display: flex;
@@ -409,8 +409,12 @@ body {
   flex-wrap: wrap;
   gap: 12px;
   color: var(--muted);
-  font-size: 12px;
-  
+  font-size: 14px;
+}
+
+.site-footer.lowered {
+  margin-top: 380px;
+  padding-bottom: 56px;
 }
 
 @media (max-width: 720px) {
