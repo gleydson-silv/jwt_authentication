@@ -184,26 +184,31 @@ function setupForms() {
       event.preventDefault();
       const result = form.parentElement.querySelector("[data-result]");
       const payload = serializeForm(form);
+      let useAltEndpoint = false;
 
       if (form.dataset.useRefresh === "true") {
         const refresh = getToken("refresh");
         if (!refresh && !payload.refresh) {
-          showResult(result, "Refresh token ausente no navegador.", true);
-          return;
+          if (form.dataset.endpointAlt) {
+            useAltEndpoint = true;
+          } else {
+            showResult(result, "Refresh token ausente no navegador.", true);
+            return;
+          }
         }
         if (refresh && !payload.refresh) {
           payload.refresh = refresh;
         }
       }
 
-      const endpoint = buildEndpoint(form, payload);
+      const endpoint = useAltEndpoint ? form.dataset.endpointAlt : buildEndpoint(form, payload);
       if (!endpoint) {
         showResult(result, "Endpoint nao definido.", true);
         return;
       }
 
       const method = form.dataset.method || "POST";
-      const useAuth = form.dataset.auth === "true";
+      const useAuth = !useAltEndpoint && form.dataset.auth === "true";
 
       try {
         const { response, data } = await apiRequest({
