@@ -1,0 +1,39 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Segurança{% endblock %}
+
+{% block content %}
+<section class="hero compact">
+  <div>
+    <h1>Segurança e 2FA</h1>
+    <p>Gerencie tokens, verifique 2FA e altere credenciais sensíveis com foco em proteção.</p>
+  </div>
+</section>
+
+<section class="grid">
+  <a class="panel" href="/app/2fa/verify/">
+    <h3>Verificar 2FA</h3>
+    <p>Confirme o código TOTP e emita tokens JWT.</p>
+  </a>
+  <a class="panel" href="/app/2fa/enable/">
+    <h3>Ativar 2FA</h3>
+    <p>Gere segredo e ative no usuário autenticado.</p>
+  </a>
+  <a class="panel" href="/app/2fa/disable/">
+    <h3>Desativar 2FA</h3>
+    <p>Remova o segundo fator quando necessário.</p>
+  </a>
+  <a class="panel" href="/app/change-password/">
+    <h3>Trocar senha</h3>
+    <p>Atualize senha com validações de segurança.</p>
+  </a>
+  <a class="panel" href="/app/token/verify/">
+    <h3>Verificar token</h3>
+    <p>Valide access ou refresh tokens.</p>
+  </a>
+  <a class="panel" href="/app/token/refresh/">
+    <h3>Refresh token</h3>
+    <p>Renove access token com refresh.</p>
+  </a>
+</section>
+{% endblock %}
