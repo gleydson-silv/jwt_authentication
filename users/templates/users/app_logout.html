@@ -8,8 +8,8 @@
     <h1>Logout</h1>
     <p>Invalidar o refresh token e encerrar a sessão.</p>
   </div>
-  <form class="form" data-endpoint="/logout/" data-method="POST" data-auth="true" data-use-refresh="true" data-redirect="/app/">
-    <p class="inline-note">O refresh token será enviado automaticamente se estiver salvo.</p>
+  <form class="form" data-endpoint="/logout/" data-endpoint-alt="/accounts/logout/" data-method="POST" data-auth="true" data-use-refresh="true" data-redirect="/app/">
+    <p class="inline-note">Se houver refresh token, ele será invalidado. Em login social, faremos logout da sessão.</p>
     <button class="button primary" type="submit">Fazer logout</button>
   </form>
   <div class="result" data-result></div>
