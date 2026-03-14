@@ -1,0 +1,20 @@
+{% extends 'users/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>{{ heading }}</h1>
+    <p>{{ subheading }}</p>
+  </div>
+  <form class="form" data-endpoint="{{ endpoint }}" data-method="{{ method }}" {% if auth %}data-auth="true"{% endif %}>
+    {{ form|safe }}
+    <button class="button primary" type="submit">{{ cta }}</button>
+  </form>
+  <div class="result" data-result></div>
+  {% if helper %}
+  <div class="helper">{{ helper|safe }}</div>
+  {% endif %}
+</section>
+{% endblock %}
