@@ -175,6 +175,43 @@ users/             # app de autenticação
 
 Após autenticar, o allauth faz redirect conforme `LOGIN_REDIRECT_URL` em `backend/settings.py`.
 
+---
+
+## 🎨 Front-end (UI)
+
+O projeto agora inclui um front-end moderno e responsivo para testar todas as rotas diretamente no navegador.
+
+### Rotas da UI
+
+- `/app/` (home)
+- `/app/register/`
+- `/app/login/`
+- `/app/logout/`
+- `/app/forgot-password/`
+- `/app/reset-password/`
+- `/app/reset-password/<uidb64>/<token>/`
+- `/app/change-password/`
+- `/app/profile/`
+- `/app/profile/update/`
+- `/app/token/verify/`
+- `/app/token/refresh/`
+- `/app/account/delete/`
+- `/app/2fa/verify/`
+- `/app/2fa/enable/`
+- `/app/2fa/disable/`
+- `/app/security/`
+
+### Login com Google
+
+O botão de login com Google aponta para a rota do allauth:
+
+- `/accounts/google/login/`
+
+### Observações
+
+- As respostas exibidas na UI são mensagens curtas, sem JSON.
+- Em caso de sucesso, a interface redireciona para o próximo passo do fluxo.
+
 
 
 
