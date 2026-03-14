@@ -1,0 +1,19 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Ativar 2FA{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Ativar 2FA</h1>
+    <p>Gere o segredo e ative a autenticação em dois fatores.</p>
+  </div>
+  <form class="form" data-endpoint="/2fa/enable/" data-method="POST" data-auth="true" data-redirect="/app/security/">
+    <button class="button primary" type="submit">Ativar 2FA</button>
+  </form>
+  <div class="result" data-result></div>
+  <div class="helper">
+    Guarde o segredo retornado para cadastrar no aplicativo autenticador.
+  </div>
+</section>
+{% endblock %}
