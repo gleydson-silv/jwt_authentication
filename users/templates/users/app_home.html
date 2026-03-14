@@ -1,0 +1,81 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Visão Geral{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div>
+    <h1>Front-end completo para cada rota</h1>
+    <p>Execute testes rápidos de autenticação, gerenciamento de conta, 2FA e tokens diretamente no navegador. Tudo responsivo, claro e focado em fluxo real de uso.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="/app/login/">Entrar</a>
+      <a class="button ghost" href="/app/register/">Criar conta</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="hero-card-title">Estado do navegador</div>
+    <div class="hero-card-body">
+      <div class="kv">
+        <span>Access</span>
+        <strong data-token="access">Sem token</strong>
+      </div>
+      <div class="kv">
+        <span>Refresh</span>
+        <strong data-token="refresh">Sem token</strong>
+      </div>
+    </div>
+    <button class="button subtle" data-action="clear-tokens">Limpar tokens</button>
+  </div>
+</section>
+
+<section class="grid">
+  <a class="panel" href="/app/register/">
+    <h3>Registro</h3>
+    <p>Crie um novo usuário via <code>POST /register/</code>.</p>
+  </a>
+  <a class="panel" href="/app/login/">
+    <h3>Login</h3>
+    <p>Autentique e receba access/refresh tokens.</p>
+  </a>
+  <a class="panel" href="/app/forgot-password/">
+    <h3>Recuperar senha</h3>
+    <p>Dispare o e-mail com link de reset.</p>
+  </a>
+  <a class="panel" href="/app/reset-password/">
+    <h3>Reset de senha</h3>
+    <p>Envie nova senha com token válido.</p>
+  </a>
+  <a class="panel" href="/app/profile/">
+    <h3>Perfil</h3>
+    <p>Leia dados do usuário autenticado.</p>
+  </a>
+  <a class="panel" href="/app/profile/update/">
+    <h3>Atualizar perfil</h3>
+    <p>Altere nome e e-mail via <code>PUT /profile/update/</code>.</p>
+  </a>
+  <a class="panel" href="/app/change-password/">
+    <h3>Trocar senha</h3>
+    <p>Atualize senha com validação.</p>
+  </a>
+  <a class="panel" href="/app/token/verify/">
+    <h3>Verificar token</h3>
+    <p>Valide um token JWT.</p>
+  </a>
+  <a class="panel" href="/app/token/refresh/">
+    <h3>Refresh token</h3>
+    <p>Gere novo access token.</p>
+  </a>
+  <a class="panel" href="/app/2fa/verify/">
+    <h3>2FA</h3>
+    <p>Verificação, ativação e desativação.</p>
+  </a>
+  <a class="panel" href="/app/account/delete/">
+    <h3>Excluir conta</h3>
+    <p>Apague o usuário autenticado.</p>
+  </a>
+  <a class="panel" href="/app/logout/">
+    <h3>Logout</h3>
+    <p>Invalidar refresh token.</p>
+  </a>
+</section>
+{% endblock %}
