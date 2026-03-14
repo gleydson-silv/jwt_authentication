@@ -1,0 +1,28 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Auth Studio · Login{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+  <div class="form-header">
+    <h1>Entrar</h1>
+    <p>Autentique-se e receba tokens JWT. Se 2FA estiver ativo, você será direcionado.</p>
+  </div>
+  <form class="form" data-endpoint="/login/" data-method="POST" data-auth="false" data-redirect="/app/profile/">
+    <label class="field">
+      <span>E-mail</span>
+      <input type="email" name="email" placeholder="voce@email.com" required />
+    </label>
+    <label class="field">
+      <span>Senha</span>
+      <input type="password" name="password" placeholder="Sua senha" required />
+    </label>
+    <button class="button primary" type="submit">Entrar</button>
+  </form>
+  <a class="button google" href="/accounts/google/login/">Entrar com Google</a>
+  <div class="result" data-result></div>
+  <div class="helper">
+    Precisa recuperar a senha? <a href="/app/forgot-password/">Clique aqui</a>.
+  </div>
+</section>
+{% endblock %}
