@@ -56,6 +56,11 @@ def app_profile_update(request):
 
 
 @ensure_csrf_cookie
+def app_profile_update_partial(request):
+    return render(request, "users/app_profile_update_partial.html")
+
+
+@ensure_csrf_cookie
 def app_token_verify(request):
     return render(request, "users/app_token_verify.html")
 
