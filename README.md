@@ -114,6 +114,7 @@ users/             # app de autenticação
 |--------|------------------------|---------------------------------------|------------------|
 | GET    | `/profile/`        | Dados do usuário autenticado          | Bearer Token     |
 | PUT    | `/profile/update/` | Atualiza Dados do usuário autenticado | Bearer Token     |
+| PATCH  | `/profile/update/partial/` | Atualiza parcialmente dados do usuário autenticado | Bearer Token     |
 
 **Resposta de exemplo**
 ```json
@@ -193,6 +194,7 @@ O projeto agora inclui um front-end moderno e responsivo para testar todas as ro
 - `/app/change-password/`
 - `/app/profile/`
 - `/app/profile/update/`
+- `/app/profile/update/partial/`
 - `/app/token/verify/`
 - `/app/token/refresh/`
 - `/app/account/delete/`
