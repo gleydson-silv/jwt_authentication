@@ -231,6 +231,33 @@ def update_profile(request):
     })   
 
 
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+@ratelimit(key='user', rate='5/m', method='PATCH')
+def update_partial_profile(request):
+    if getattr(request, 'limited', False):
+        return Response(
+            {"error": "Limite máximo de requisições atingido."},
+            status=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+    
+    user = request.user
+    data = request.data
+
+    if 'first_name' in data:
+        user.first_name = data['first_name']
+    if 'last_name' in data:
+        user.last_name  = data['last_name']
+    if 'email' in data:
+        user.email = data['email']
+    
+    user.save()
+
+    return Response({
+        'name': user.first_name + " " + user.last_name,
+        'email': user.email,
+    })
+
 
 @api_view(['POST'])
 @ratelimit(key='user', rate='5/m', method='POST')
@@ -336,4 +363,3 @@ def disable_2fa(request):
     user.two_factor_enabled = False
     user.save()
     return Response({"message": "2FA desabilitado com sucesso"}, status=status.HTTP_200_OK)
-
