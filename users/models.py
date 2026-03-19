@@ -25,10 +25,10 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=255, null=True, blank=True)
-    last_name = models.CharField(max_length=255, null=True, blank=True)
+    first_name = models.CharField(max_length=255, null=False, blank=False)
+    last_name = models.CharField(max_length=255, null=False, blank=False)
     two_factor_enabled = models.BooleanField(default=False)
-    two_factor_secret = models.CharField(max_length=255, blank=True, null=True)
+    two_factor_secret = models.CharField(max_length=255, blank=False, null=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
