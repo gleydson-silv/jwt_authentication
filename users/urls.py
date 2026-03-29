@@ -1,9 +1,11 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 from . import frontend_views
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/app/', permanent=False), name='root_redirect'),
     path('register/', views.register, name='register'),
     path('login/', views.login, name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

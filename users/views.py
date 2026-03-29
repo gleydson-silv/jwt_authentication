@@ -22,6 +22,7 @@ from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.helpers import complete_social_login
 import pyotp # type: ignore
 from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
 
 @api_view(['POST'])
 @ratelimit(key='user', rate='5/m', method='POST')
